@@ -4,7 +4,7 @@ import re
 import csv
 from os.path import isfile
 
-def setup_csv(file_handle):
+def setup_csv(file_handle, writeheader=False):
     """
     Returns a CSV writer
     """
@@ -21,7 +21,8 @@ def setup_csv(file_handle):
         'Vampire', 'Yaoi', 'Yuri'
     ]
     writer = csv.DictWriter(file_handle, headers)
-    writer.writeheader()
+    if writeheader:
+        writer.writeheader()
     return writer
 
 
@@ -35,20 +36,29 @@ def add_to_csv(csv, anime):
 def parse_duration(string):
     """
     Parses episode duration strings and returns number of minutes.
-
     For example:
+        "3 hr. 2 min. 1 sec. per ep." -> 183
         "1 hr. 45 min." -> 105
         "23 min. per ep." -> 23
+        "42 sec. per ep." -> 1
+        "29 sec. per ep." -> 1
+        "Unknown" -> None
+        "N/A" -> None
+    These examples prints error to stdout:
+        "0 sec. per ep." -> None
+        "???" -> None
     """
-    match = re.search("\d+(?= min)", string)
-    if not match:
+    def match_time(string, unit):
+        match = re.search(f"\d+(?= {unit})", string)
+        return int(match.group(0)) if match else 0
+    seconds = match_time(string, "sec")
+    minutes = 0 if seconds == 0 else 1
+    minutes += match_time(string, "min")
+    minutes += match_time(string, "hr") * 60
+    if minutes == 0:
         if string != "Unknown" and string != "N/A":
-            print(f"ERROR: {string} not a duration")
+            print(f"ERROR: '{string}' not a duration > 0 seconds")
         return
-    minutes = int(match.group(0))
-    match = re.search("\d+(?= hr)", string)
-    if match:
-        minutes += int(match.group(0)) * 60
     return minutes
 
 
@@ -156,7 +166,7 @@ def get_season(csv, year, season):
 
 
 def get_year(csv, year):
-    for season in ["winter", "spring", "summer", "fall"]:
+    for season in reversed(["winter", "spring", "summer", "fall"]):
         get_season(csv, year, season)
 
 
@@ -165,10 +175,14 @@ def get_all_years(csv, start=2020, end=1916):
         get_year(csv, year)
 
 
+OUTPUT = 'sample.csv'
+
+
 def main():
-    with open('sample.csv', 'w') as f:
-        csv = setup_csv(f)
-        get_season(csv, 2020, 'winter')
+    file_exists = isfile(OUTPUT)
+    with open(OUTPUT, 'a+') as f:
+        csv = setup_csv(f, writeheader=not file_exists)
+        # get_year(csv, 2019)
         # get_all_years(csv, end=2018)
 
 
