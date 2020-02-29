@@ -4,22 +4,35 @@ import re
 import csv
 from os.path import isfile
 
+
+def parse_genres(soup):
+    """
+    Parses and returns a list of all genres in the given soup.
+    """
+    return [
+        re.sub(' \(.*?\)', '', a.text) for a in
+        soup.find("div", "genre-link").find_all("a", "genre-name-link")
+    ]
+
+
+def get_genres():
+    """
+    Fetches and returns a list of all genres.
+    """
+    html = requests.get("https://myanimelist.net/anime.php").text
+    soup = BeautifulSoup(html, 'html.parser')
+    return parse_genres(soup)
+
+
 def setup_csv(file_handle, writeheader=False):
     """
-    Returns a CSV writer
+    Returns a CSV writer.
     """
     headers = [
         "ID", "Name", "Year", "Season", 'English', 'Japanese', 'Episodes',
-        'Broadcast', 'Source', 'Duration', 'Rating', 'Score', 'Members',
-        'Favorites', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia',
-        'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai',
-        'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts',
-        'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police',
-        'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen',
-        'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life',
-        'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller',
-        'Vampire', 'Yaoi', 'Yuri'
-    ]
+        'Broadcast', 'Source', 'Duration', 'Rating',
+        'Score', 'Members', 'Favorites'
+    ] + get_genres()
     writer = csv.DictWriter(file_handle, headers)
     if writeheader:
         writer.writeheader()
