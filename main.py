@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import csv
 from os.path import isfile
+from time import sleep
 
 
 def parse_genres(soup):
@@ -33,7 +34,8 @@ def setup_csv(file_handle, writeheader=False):
         'Broadcast', 'Source', 'Duration', 'Rating',
         'Score', 'Members', 'Favorites'
     ] + get_genres()
-    writer = csv.DictWriter(file_handle, headers)
+    # To ignore the "No genres have been added yet." genre
+    writer = csv.DictWriter(file_handle, headers, extrasaction='ignore')
     if writeheader:
         writer.writeheader()
     return writer
@@ -109,9 +111,12 @@ def parse_anime(soup):
         "Favorites":17542
     }
     """
+    start = soup.find("h2", text="Alternative Titles")
+    if not start:
+        start = soup.find("h2", text="Information")
     info = [
         div.stripped_strings for div in 
-        soup.find("h2", text="Alternative Titles").find_next_siblings("div")
+        start.find_next_siblings("div")
     ]
     name = next(soup.find("span", itemprop="name").strings)
     result = { 'Name': name }
@@ -167,6 +172,7 @@ def parse_season(soup):
 
 
 def get_season(csv, year, season):
+    print(f"START {year}/{season}")
     season_url = f"https://myanimelist.net/anime/season/{year}/{season}"
     html = requests.get(season_url).text
     soup = BeautifulSoup(html, 'html.parser')
@@ -186,15 +192,19 @@ def get_year(csv, year):
 def get_all_years(csv, start=2020, end=1916):
     for year in range(start, end, -1 if start > end else 1):
         get_year(csv, year)
+        sleep(4)
 
 
-OUTPUT = 'sample.csv'
+OUTPUT = 'full.csv'
 
 
 def main():
     file_exists = isfile(OUTPUT)
     with open(OUTPUT, 'a+') as f:
         csv = setup_csv(f, writeheader=not file_exists)
+        # get_season(csv, 2020, 'winter')
+        # get_all_years(csv, start=2019)
+        get_all_years(csv, start=2018)
         # get_year(csv, 2019)
         # get_all_years(csv, end=2018)
 
