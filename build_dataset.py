@@ -25,15 +25,17 @@ def get_genres():
     return parse_genres(soup)
 
 
+basic_headers = [
+    "ID", "Name", "Year", "Season", 'English', 'Japanese', 'Episodes',
+    'Broadcast', 'Source', 'Duration', 'Rating',
+    'Score', 'Members', 'Favorites'
+]
+
 def setup_csv(file_handle, writeheader=False):
     """
     Returns a CSV writer.
     """
-    headers = [
-        "ID", "Name", "Year", "Season", 'English', 'Japanese', 'Episodes',
-        'Broadcast', 'Source', 'Duration', 'Rating',
-        'Score', 'Members', 'Favorites'
-    ] + get_genres()
+    headers = basic_headers + get_genres()
     # To ignore the "No genres have been added yet." genre
     writer = csv.DictWriter(file_handle, headers, extrasaction='ignore')
     if writeheader:
