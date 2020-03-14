@@ -204,6 +204,7 @@ def get_all_years(csv, start=2020, end=1916):
         sleep(4)
 
 
+# First, change this to desired output filename
 OUTPUT = "future.csv"
 
 
@@ -211,10 +212,17 @@ def main():
     file_exists = isfile(OUTPUT)
     with open(OUTPUT, "a+") as f:
         csv = setup_csv(f, writeheader=not file_exists)
+        # To produce the future dataset, uncomment the next two lines
         get_season(csv, 2020, "summer")
         get_season(csv, 2020, "spring")
+
+        # To produce the full dataset, uncomment the next two lines
         # get_season(csv, 2020, "winter")
         # get_all_years(csv, start=2019)
+
+        # To produce the sample dataset, uncomment the next two lines
+        # get_season(csv, 2020, "winter")
+        # get_all_years(csv, start=2019, end=2018)
 
 
 if __name__ == "__main__":

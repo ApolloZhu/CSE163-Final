@@ -128,5 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .DS_Store
-test-genres heatmap.png
-test-genres trend recent.png
+test-*
