@@ -42,50 +42,62 @@ def mlMSE(model, X_test, y_test):
     return mean_squared_error(y_test, model.predict(X_test))
 
 
-def load_dataset(filename, dropna=True):
+def load_dataset(filename, dropna=True, adjusted=False):
     df = pd.read_csv(filename)
     # Remove all rows where Score/Members/Favorites has no data
     labels = ["Score", "Members", "Favorites"]
     if dropna:
         df = pd.DataFrame(df.dropna(subset=labels))
 
-    filt_lst = [
+    non_features = [
         "ID", "Name", "Year", "English", "Japanese", "Broadcast",
     ] + labels
-    X = df[df.columns.difference(filt_lst)].fillna(0)
+    if adjusted:
+        non_features += ["Episodes", "Duration"]
+    X = df[df.columns.difference(non_features)].fillna(0)
     X = pd.get_dummies(X)
-    X.columns = X.columns.str.replace("&", " and ")
+    X.columns = X.columns.str.replace("&", "and")
     return X, df["Score"], df
 
 
-def populate_future(filename, model, features, future="future.csv"):
+def predict_future_anime(model, X, adjusted=False, future="future.csv"):
     '''
-    Fills the score column of future season where Score is unknown
-    and save the results to the given filename.
+    Returns the predicted scores using the given model for the given future,
+    substituting 0 as values for missing features if necessary.
     '''
-    future_anime, _, df = load_dataset(future, dropna=False)
-    missing_dummies = set(features) - set(future_anime.columns)
+    future_anime, _, df = load_dataset(future, dropna=False, adjusted=adjusted)
+    missing_dummies = set(X.columns) - set(future_anime.columns)
     future_anime = future_anime.assign(**dict.fromkeys(missing_dummies, 0))
-    df["Score"] = model.predict(future_anime)
-    df.to_csv(filename)
+    return model.predict(future_anime), df
 
 
-def main():
-    '''
-    Training our model for score, members, and favorites
-    '''
-    X, y_score, df = load_dataset("full.csv")
+def validatedMLTrain(adjusted=False):
+    X, y_score, df = load_dataset("full.csv", adjusted=adjusted)
     score_model, score_X_test, score_y_test = mlTrain(X, y_score)
-    score_mse = mlMSE(score_model, score_X_test, score_y_test)
 
-    plot_tree(score_model, score_X_test).render("model")
+    score_mse = mlMSE(score_model, score_X_test, score_y_test)
     print(f"MSE for entire dataset is: {score_mse}")
 
     indices = df[(df["Year"] == 2020) & (df["Season"] == "winter")].index
     score_mse = mlMSE(score_model, X.loc[indices, :], y_score.loc[indices])
     print(f"MSE for current season is: {score_mse}")
+    return score_model, X
 
-    populate_future("predictions.csv", score_model, X.columns)
+
+def main():
+    '''
+    Training our model to predict for score
+    '''
+    score_model, X = validatedMLTrain()
+    plot_tree(score_model, X).render("model")
+    # Predict for future season
+    raw, df = predict_future_anime(score_model, X)
+    score_model, X = validatedMLTrain(adjusted=True)
+    adjusted, _ = predict_future_anime(score_model, X, adjusted=True)
+    df["Score"] = raw
+    df["Score (adjusted)"] = adjusted
+    df["Score (difference)"] = adjusted - raw
+    df.to_csv("predictions.csv")
 
 
 if __name__ == "__main__":
