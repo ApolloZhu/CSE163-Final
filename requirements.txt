@@ -3,3 +3,5 @@ requests
 matplotlib
 pandas
 seaborn
+sklearn
+graphviz
