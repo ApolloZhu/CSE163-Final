@@ -54,11 +54,11 @@ Genres in the legend of following two figures are the most popular genres in the
 
 This shows the change in distribution of genres of top **5** anime:
 
-![popular genres for top 5 anime](./genres%20trend%20recent%20\(top%205\).png)
+![popular genres for top 5 anime](./genres%20trend%20recent%20(top%205).png)
 
 This shows the change in distribution of genres of top **10** anime:
 
-![popular genres for top 10 anime](./genres%20trend%20recent%20\(top%2010\).png)
+![popular genres for top 10 anime](./genres%20trend%20recent%20(top%2010).png)
 
 As shown by both graphs, genre Comedy, Action, Shounen (youngster), Drama, and School are the most popular in the last 5 years, and those of genre Supernatural has decreasing popularity. Other genres are not as consistently popular as the top 5 genres, nor is there a band that is continously increasing in width, thus we conclude there isn’t a specific genre that has a significant increase in popularity in the past 5 years that’s consistent enough in which anime production companies should focus on more instead immediately.
 
@@ -73,21 +73,21 @@ We can observe that our top 5 genres are indeed popular in most times, especiall
 The mean squared error (MSE) between the predicted value and the actual score in the dataset is consistently about ***0.6*** (as shown in the output below), approximately meaning that our prediction will differ from the actual score by about 0.8 on a 10 point scale. This result is definitely not idea, but we argue it works okay when all features it requests for are present.
 
 ```diff
-~ python3 ml_model.py
+$ python3 ml_model.py
 Model, All Features
 +    MSE for train: 0.0024407141187470774
 -    MSE for test : 0.6139560924369748
 Model, No Duration/Episodes
 +    MSE for train: 0.02175004207573632
 -    MSE for test : 0.8209756239106754
-~ python3 ml_model.py
+$ python3 ml_model.py
 Model, All Features
 +    MSE for train: 0.0025445009350163615
 -    MSE for test : 0.6304989379084966
 Model, No Duration/Episodes
 +    MSE for train: 0.027270679306084285
 -    MSE for test : 0.6662676034469343
-~ python3 ml_model.py
+$ python3 ml_model.py
 Model, All Features
 +    MSE for train: 0.002390217391304347
 -    MSE for test : 0.6289949852163087
@@ -236,7 +236,7 @@ For [build_dataset.py](./build_dataset.py), each individual parsing method was d
 
 ### Collaboration
 
-While we are using GitHub/git version control system to manage source code, we sat together do pair programming. Later, we switched to WeChat voice call instead to comply with the policies of social distancing made to avoid the prevailing corona virus. In either case, both of us work on the source code at the same time using Visual Studio Live Share. This process is efficient and successful, allowing both us can switch between “driver” and “navigator” easily.
+While we are using GitHub/git version control system to manage source code, we sat together do pair programming. Later, we switched to WeChat voice call instead to comply with the policies of social distancing made to avoid the prevailing corona virus. In either case, both of us work on the source code at the same time using [Visual Studio Live Share](https://visualstudio.microsoft.com/services/live-share/). This process is efficient and successful, allowing both us can switch between “driver” and “navigator” easily.
 
 For documentation/reports, we are using SharePoint (Office 365) to edit the documents at the same time in similar settings.
 
