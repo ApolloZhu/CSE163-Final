@@ -157,6 +157,7 @@ Predictions - Spring 2020
 | Neko Neko Nihonshi 5th Season                                | ねこねこ日本史 第5期                                         | 5.65  | 6.87             | 1.22               |
 | Poccolies                                                    | ぽっこりーず                                                 | 7.74  | 6.84             | -0.90              |
 | Norimono Man Mobile Land no Car-kun                          | のりものまん モービルランドのカークン                        | 7.46  | 7.22             | -0.24              |
+
 </details>
 
 <details>
@@ -186,6 +187,7 @@ Predictions - Summer 2020
 | Chou Futsuu Toshi Kashiwa Densetsu                           | 超普通都市カシワ伝説                                         | 5.70  | 7.39             | 1.69               |
 | Obake Zukan                                                  | おばけずかん                                                 | 7.11  | 6.62             | -0.49              |
 | Akudama Drive                                                | アクダマドライブ                                             | 5.65  | 6.99             | 1.34               |
+
 </details>
 
 #### Concerns and Future Directions
@@ -272,4 +274,5 @@ The “Work Plan”
    3. Use DecisionTreeRegressor to train the model.
    4. Test the model.
 4. Write final report (**expected 1 day, actual 2 days**)
+
 </details>
