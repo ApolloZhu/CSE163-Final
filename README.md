@@ -1,6 +1,6 @@
 # Analysis on Factors Contributing to Animes’ Popularity
 
-Final project for [CSE163: Intermediate Data Programming](https://cse-163.pages.cs.washington.edu/cse-163-20wi/website/project/overview.html) by
+[Final project](https://github.com/ApolloZhu/CSE163-Final) for [CSE163: Intermediate Data Programming](https://cse-163.pages.cs.washington.edu/cse-163-20wi/website/project/overview.html) by
 
 - [Hairong (Jason) Wu](https://github.com/YuudachiXMMY) (hwu9 at uw dot edu)
 - [Zhiyu (Apollo) Zhu](https://github.com/ApolloZhu) (zhuzhiyu at uw dot edu)
@@ -103,7 +103,9 @@ This dependency on `Duration` per episode and number of `Episodes`, rather than 
 A portion of [predictions.csv](./predictions.csv) is included here for quick preview. The first entry, the final season of [Oregairu](https://www.tbs.co.jp/anime/oregairu/) (*My Youth Romantic Comedy Is Wrong, As I Expected*) has a predicted score of ***8.05*** with the adjusted model. This is similar to scores it had for the previous two season ([8.09](https://myanimelist.net/anime/14813) and [8.28](https://myanimelist.net/anime/23847) respectively).
 
 <details>
-<summary>Predictions - Spring 2020</summary>
+<summary>
+Predictions - Spring 2020
+</summary>
 
 | Name                                                         | Japanese                                                     | Score | Score (adjusted) | Score (difference) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ----- | ---------------- | ------------------ |
@@ -155,11 +157,12 @@ A portion of [predictions.csv](./predictions.csv) is included here for quick pre
 | Neko Neko Nihonshi 5th Season                                | ねこねこ日本史 第5期                                         | 5.65  | 6.87             | 1.22               |
 | Poccolies                                                    | ぽっこりーず                                                 | 7.74  | 6.84             | -0.90              |
 | Norimono Man Mobile Land no Car-kun                          | のりものまん モービルランドのカークン                        | 7.46  | 7.22             | -0.24              |
-
 </details>
 
 <details>
-<summary>Predictions - Summer 2020</summary>
+<summary>
+Predictions - Summer 2020
+</summary>
 
 | Name                                                         | Japanese                                                     | Score | Score (adjusted) | Score (difference) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ----- | ---------------- | ------------------ |
@@ -183,20 +186,25 @@ A portion of [predictions.csv](./predictions.csv) is included here for quick pre
 | Chou Futsuu Toshi Kashiwa Densetsu                           | 超普通都市カシワ伝説                                         | 5.70  | 7.39             | 1.69               |
 | Obake Zukan                                                  | おばけずかん                                                 | 7.11  | 6.62             | -0.49              |
 | Akudama Drive                                                | アクダマドライブ                                             | 5.65  | 6.99             | 1.34               |
-
 </details>
 
 #### Concerns and Future Directions
 
 The MSE for testing dataset is much higher than the training dataset (see the output above, the first row in each cluster), indicating that our model is overfitted. To get better results than ours, one could restrict number of features, depth of the decision tree, or other hyperparameters for the `DecisionTreeRegressor`. We decide not to for the interest of time and that we didn’t learn the techniques for hyper-parameter optimization through CSE 163 with the permission of assigned mentor.
 
-We intentionally left out information such as staffs, licensors, studios, and more. Indeed, these are important factors that audiences consider when it comes to which anime to watch in real life scenarios. Considering those factors will likely make our model more accurate as a famous voice actor is likely related to a higher score (just like movie stars). However, this can lead to further overfitting and, more importantly, is unfair for those individuals and corporations who participates in anime production for the first time. 
+We intentionally left out information such as staffs, licensors, studios, and more. Indeed, these are important factors that audiences consider when it comes to which anime to watch in real life scenarios. Considering those factors will likely make our model more accurate as a famous voice actor is likely related to a higher score (just like movie stars). However, this can lead to further overfitting and, more importantly, is unfair for those individuals and corporations who participates in anime production for the first time.
 
 ## Reproducing Results
 
 > **Note**: your machine learning model might be slightly different than ours because training and testing dataset are split randomly each time the program is executed. However, they should be similar.
 
-First, install the needed dependencies by running:
+Firstly, download this project or clone it using:
+
+```sh
+git clone https://github.com/ApolloZhu/CSE163-Final;cd CSE163-Final
+```
+
+Then install the needed dependencies by running:
 
 ```sh
 pip install -r requirements.txt
@@ -247,7 +255,9 @@ Not as accurate as the work plan detailed below. We only used one night to fetch
 > **Fun Fact**: the total time (as recorded by WakaTime) spent on writing code (not on writing report) is 12 hours total (if added up together).
 
 <details>
-<summary>The “Work Plan”</summary>
+<summary>
+The “Work Plan”
+</summary>
 
 1. Run the dataset creation script to fetch data for all animes (**expected few days, actual 1 night**)
    1. This process needs few supervisions. We have completed the script and should not need any major modifications. **We did end up fixing a minor parsing issue for future anime.**
