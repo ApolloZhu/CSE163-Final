@@ -46,6 +46,9 @@ def mlMSE(model, X_test, y_test):
 def load_dataset(filename, dropna=True, adjusted=False):
     '''
     Load in dataset from a csv file
+
+    dropna: False if you want to keep those without Score
+    adjusted: True if to train for future data
     '''
     df = pd.read_csv(filename)
     # Remove all rows where Score/Members/Favorites has no data

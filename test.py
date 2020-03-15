@@ -4,6 +4,9 @@ import test_analyze_trend
 
 
 def main():
+    '''
+    Testing all testables
+    '''
     test_ml_model.main()
     test_build_dataset.main()
     test_analyze_trend.main()

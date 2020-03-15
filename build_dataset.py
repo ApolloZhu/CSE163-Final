@@ -25,6 +25,7 @@ def get_genres():
     return parse_genres(soup)
 
 
+# These are the columns of interest (other than genre) in the output CSV
 basic_headers = [
     "ID", "Name", "Year", "Season", "English", "Japanese", "Episodes",
     "Broadcast", "Source", "Duration", "Rating",
@@ -152,7 +153,7 @@ def parse_anime(soup):
                 else:
                     result[key] = next(generator)
         except StopIteration:
-            pass
+            pass  # empty information row, do nothing
     return result
 
 
@@ -208,6 +209,9 @@ def get_year(csv, year):
 
 
 def get_all_years(csv, start=2020, end=1916):
+    '''
+    get all the animes on MyAnimeList
+    '''
     for year in range(start, end, -1 if start > end else 1):
         get_year(csv, year)
         sleep(4)

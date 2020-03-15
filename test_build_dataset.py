@@ -19,6 +19,9 @@ def test_parse_duration():
 
 
 def main():
+    '''
+    Test building blocks of dataset builder.
+    '''
     test_parse_duration()
     print("Tests All Passed: Web Scraping")
 

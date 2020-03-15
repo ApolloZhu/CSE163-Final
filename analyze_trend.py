@@ -56,16 +56,17 @@ def drop_if(condition, df):
 
 def plot_trend(df, prefix, top_n):
     '''
-    Plotting the datafram for {top_n}
+    Plotting the data frame for {top_n}
     '''
     # Plot at most 20 seasons
     count = min(20, len(df))
     recent = df.tail(count)
 
     def not_minimum_requirement(df):
-        """
-        Must be in 40% of the seasons popular genres to count as popular.
-        """
+        '''
+        This is the consistency requirement:
+        must be in 40% of the seasons popular genres to count as popular.
+        '''
         return (df >= 1).sum() < count * 0.4
     normalized = normalize(drop_if(not_minimum_requirement, recent))
     plot_stacked_area(normalized, top_n,
@@ -74,7 +75,7 @@ def plot_trend(df, prefix, top_n):
 
 def plot_stacked_area(df, top_n, filename):
     '''
-    Plot a stacked area plot of the datafram for {top_n} and save a fig, {filename}.png
+    Plot a stacked area plot of the data frame for {top_n} and save to filename
     '''
     sns.set()
     df = df.reindex(df.sum().sort_values(ascending=False).index, axis=1)
@@ -90,10 +91,10 @@ def plot_stacked_area(df, top_n, filename):
 
 
 def plot_heatmap(df, prefix):
-    """
+    '''
     Plots a legible (high contrast) heatmap for the given data frame
     and save the result to `{prefix}genres heatmap.png`
-    """
+    '''
     normalized = normalize(df).transpose()
     sns.set()
     plt.style.use("dark_background")
@@ -112,9 +113,9 @@ def plot_heatmap(df, prefix):
 
 
 def main():
-    """
+    '''
     Analyze trend
-    """
+    '''
     df = pd.read_csv("full.csv")
     analyze_trend(df)
 

@@ -4,7 +4,7 @@ import pandas as pd
 
 def main():
     '''
-    Test analyze_trend in analyze_trend.py on a small dataset
+    Test trend analysis on a smaller dataset
     '''
     print("Testing analyze_trend.analyze_trend")
     df = pd.read_csv("sample.csv")
