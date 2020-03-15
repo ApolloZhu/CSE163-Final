@@ -7,24 +7,34 @@ from build_dataset import basic_headers
 
 
 def only_genres_for_top_n(df, n):
+    '''
+    Returns data frame of all genres for top {n} anime in each season by Score,
+    with each genre's count added together.
+
+    The returned data frame is Indexed by year and season.
+    '''
     grouped = df.groupby(["Year", "Season"]) \
         .apply(lambda season: season.nlargest(n, "Score", keep="all")) \
         .reset_index(drop=True) \
         .groupby(["Year", "Season"]).sum().dropna()
+    # Keep only genres, nothing else
     return grouped[grouped.columns.difference(basic_headers)]
 
 
 def analyze_trend(df, prefix=""):
+    '''
+    Plot the top 5 and top 10's anime genres by Score.
+    '''
     # Discard anything that doesn"t have a user rating (score)
     df = pd.DataFrame(df.dropna(subset=["Score"]))
     # Set desired sorting order for season
     df["Season"] = pd.Categorical(df["Season"],
                                   ["winter", "spring", "summer", "fall"])
+    # Plot for top 5
     only_genres = only_genres_for_top_n(df, 5)
     plot_trend(only_genres, prefix, top_n=5)
-    # Keep the 10 most popular anime in each season and sum all genres
+    # Plot for top 10
     only_genres = only_genres_for_top_n(df, 10)
-    # Filter columns to contain only genres in the figure
     plot_trend(only_genres, prefix, top_n=10)
     plot_heatmap(only_genres, prefix)
 
@@ -37,11 +47,17 @@ def normalize(df):
 
 
 def drop_if(condition, df):
+    '''
+    Drop the data matching the condition
+    '''
     columns_to_drop = df.columns[condition(df)]
     return df.drop(columns_to_drop, axis=1)
 
 
 def plot_trend(df, prefix, top_n):
+    '''
+    Plotting the datafram for {top_n}
+    '''
     # Plot at most 20 seasons
     count = min(20, len(df))
     recent = df.tail(count)
@@ -57,6 +73,9 @@ def plot_trend(df, prefix, top_n):
 
 
 def plot_stacked_area(df, top_n, filename):
+    '''
+    Plot a stacked area plot of the datafram for {top_n} and save a fig, {filename}.png
+    '''
     sns.set()
     df = df.reindex(df.sum().sort_values(ascending=False).index, axis=1)
     # Select different color pallets depending on number of genres.
@@ -92,6 +111,13 @@ def plot_heatmap(df, prefix):
     plt.savefig(f"{prefix}genres heatmap.png", bbox_inches="tight")
 
 
-if __name__ == "__main__":
+def main():
+    """
+    Analyze trend
+    """
     df = pd.read_csv("full.csv")
     analyze_trend(df)
+
+
+if __name__ == "__main__":
+    main()

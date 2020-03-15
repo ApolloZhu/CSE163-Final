@@ -81,6 +81,9 @@ def parse_duration(string):
 
 
 def parse_number(string):
+    '''
+    Return anime information extracted from the given soup.
+    '''
     try:
         return int(string.replace(",", ""))
     except ValueError:
@@ -181,6 +184,9 @@ def parse_season(soup):
 
 
 def get_season(csv, year, season):
+    '''
+    Get a season's animes and addthem to csv file
+    '''
     print(f"START {year}/{season}")
     season_url = f"https://myanimelist.net/anime/season/{year}/{season}"
     html = requests.get(season_url).text
@@ -194,6 +200,9 @@ def get_season(csv, year, season):
 
 
 def get_year(csv, year):
+    '''
+    get all the animes of a year
+    '''
     for season in reversed(["winter", "spring", "summer", "fall"]):
         get_season(csv, year, season)
 
@@ -209,6 +218,9 @@ OUTPUT = "future.csv"
 
 
 def main():
+    '''
+    Fetching and building our dataset.
+    '''
     file_exists = isfile(OUTPUT)
     with open(OUTPUT, "a+") as f:
         csv = setup_csv(f, writeheader=not file_exists)

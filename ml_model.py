@@ -31,6 +31,8 @@ def mlTrain(X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
     model = DecisionTreeRegressor()
     model.fit(X_train, y_train)
+    score_mse = mlMSE(model, X_train, y_train)
+    print(f"    MSE for train: {score_mse}")
     return model, X_test, y_test
 
 
@@ -43,6 +45,9 @@ def mlMSE(model, X_test, y_test):
 
 
 def load_dataset(filename, dropna=True, adjusted=False):
+    '''
+    Load in dataset from a csv file
+    '''
     df = pd.read_csv(filename)
     # Remove all rows where Score/Members/Favorites has no data
     labels = ["Score", "Members", "Favorites"]
@@ -72,15 +77,19 @@ def predict_future_anime(model, X, adjusted=False, future="future.csv"):
 
 
 def validatedMLTrain(adjusted=False):
+    '''
+    Return a trained model and its feature set
+    '''
     X, y_score, df = load_dataset("full.csv", adjusted=adjusted)
     score_model, score_X_test, score_y_test = mlTrain(X, y_score)
 
     score_mse = mlMSE(score_model, score_X_test, score_y_test)
-    print(f"MSE for entire dataset is: {score_mse}")
+    print(f"    MSE for test : {score_mse}")
 
-    indices = df[(df["Year"] == 2020) & (df["Season"] == "winter")].index
-    score_mse = mlMSE(score_model, X.loc[indices, :], y_score.loc[indices])
-    print(f"MSE for current season is: {score_mse}")
+    # Compare against current season (winter 2020)
+    # indices = df[(df["Year"] == 2020) & (df["Season"] == "winter")].index
+    # score_mse = mlMSE(score_model, X.loc[indices, :], y_score.loc[indices])
+    # print(f"\tMSE for current season is: {score_mse}")
     return score_model, X
 
 
@@ -88,10 +97,12 @@ def main():
     '''
     Training our model to predict for score
     '''
+    print("Model, All Features")
     score_model, X = validatedMLTrain()
     plot_tree(score_model, X).render("model")
     # Predict for future season
     raw, df = predict_future_anime(score_model, X)
+    print("Model, No Duration/Episodes")
     score_model, X = validatedMLTrain(adjusted=True)
     adjusted, _ = predict_future_anime(score_model, X, adjusted=True)
     df["Score"] = raw
