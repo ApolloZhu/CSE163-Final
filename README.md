@@ -103,7 +103,7 @@ This dependency on `Duration` per episode and number of `Episodes`, rather than 
 A portion of [predictions.csv](./predictions.csv) is included here for quick preview. The first entry, the final season of [Oregairu](https://www.tbs.co.jp/anime/oregairu/) (*My Youth Romantic Comedy Is Wrong, As I Expected*) has a predicted score of ***8.05*** with the adjusted model. This is similar to scores it had for the previous two season ([8.09](https://myanimelist.net/anime/14813) and [8.28](https://myanimelist.net/anime/23847) respectively).
 
 <details>
-<summary>
+<summary markdown='span'>
 Predictions - Spring 2020
 </summary>
 
@@ -161,7 +161,7 @@ Predictions - Spring 2020
 </details>
 
 <details>
-<summary>
+<summary markdown='span'>
 Predictions - Summer 2020
 </summary>
 
@@ -257,7 +257,7 @@ Not as accurate as the work plan detailed below. We only used one night to fetch
 > **Fun Fact**: the total time (as recorded by WakaTime) spent on writing code (not on writing report) is 12 hours total (if added up together).
 
 <details>
-<summary>
+<summary markdown='span'>
 The “Work Plan”
 </summary>
 
